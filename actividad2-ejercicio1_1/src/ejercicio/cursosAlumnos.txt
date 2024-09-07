@@ -1,6 +1,6 @@
-Mate I,11723
-Mate II,11723
-Algebra,11724
-Fisica,11723
-POO II,11724
-POO II,11723
+Mate I,11723,Guaripolo
+Mate II,11723,Guaripolo
+Mate I,11724,Tulio Tribiño
+Fisica,11723,Guaripolo
+POO II,11724,Tulio Tribiño
+POO II,11723,Guaripolo

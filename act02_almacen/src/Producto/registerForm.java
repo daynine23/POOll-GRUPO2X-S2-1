@@ -6,6 +6,7 @@
 package Producto;
 
 import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,7 +46,6 @@ public class registerForm extends javax.swing.JFrame {
         product_txtfield = new javax.swing.JTextField();
         cantidad_txtfield = new javax.swing.JTextField();
         nuevo_button = new javax.swing.JButton();
-        register_button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,6 +59,8 @@ public class registerForm extends javax.swing.JFrame {
             }
         });
 
+        nuevo_button.setBackground(new java.awt.Color(153, 255, 0));
+        nuevo_button.setForeground(new java.awt.Color(0, 0, 0));
         nuevo_button.setText("Añadir Nuevo (+)");
         nuevo_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -66,33 +68,25 @@ public class registerForm extends javax.swing.JFrame {
             }
         });
 
-        register_button.setBackground(new java.awt.Color(51, 255, 0));
-        register_button.setText("Registrar todo");
-        register_button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                register_buttonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap(32, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(product_txtfield, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(75, 75, 75)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(cantidad_txtfield, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(register_button, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(nuevo_button, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)))
-                .addGap(223, 223, 223))
+                            .addComponent(cantidad_txtfield, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(223, 223, 223))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(nuevo_button, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(204, 204, 204))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,9 +101,7 @@ public class registerForm extends javax.swing.JFrame {
                     .addComponent(cantidad_txtfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addComponent(nuevo_button)
-                .addGap(28, 28, 28)
-                .addComponent(register_button)
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(161, Short.MAX_VALUE))
         );
 
         product_txtfield.getAccessibleContext().setAccessibleName("product_txtfield");
@@ -131,7 +123,7 @@ public class registerForm extends javax.swing.JFrame {
         String product_name = product_txtfield.getText();
         int quantity_number = Integer.parseInt(cantidad_txtfield.getText());
         
-        if(products_list.size()>0){
+        /*if(products_list.size()>0){
             for(Producto p :products_list){
                     String listPName_Upper =  p.getNombreProducto().toUpperCase();
                     String newPName_Upper = product_name.toUpperCase();
@@ -142,36 +134,34 @@ public class registerForm extends javax.swing.JFrame {
                     return;
                     }
             }
-        }
+        }*/
         Producto new_p = new Producto();
         new_p.setNombreProducto(product_name);
         new_p.setCantidad(quantity_number);
         products_list.add(new_p);
-        showMessageDialog(null, "Se añadió el producto!");
-        product_txtfield.setText("");
-        cantidad_txtfield.setText("");
-    }//GEN-LAST:event_nuevo_buttonActionPerformed
-
-    private void register_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_register_buttonActionPerformed
-        // TODO add your handling code here:
-        FileWriter writer;
+        //(null, "Se añadió el producto!");
+        //--------------------------------------------------
+        FileWriter file;
         try {
-            writer = new FileWriter("stock.txt");
+            file = new FileWriter("stock.txt");
+            BufferedWriter output = new BufferedWriter(file);
             int size = products_list.size();
             for (int i = 0; i < size ; i++) {
                 String pname = products_list.get(i).getNombreProducto();
                 String pqnty = Integer.toString(products_list.get(i).getCantidad());
-                writer.write(pname + ", ");
-                writer.write(pqnty);
+                output.write(pname + ", ");
+                output.write(pqnty);
                 if(i < size-1) //This prevent creating a blank like at the end of the file**
-                    writer.write("\n");
+                    output.write("\n");
             }
-            writer.close();
+            output.close();
             showMessageDialog(null, "Se registro el fichero stock.txt!");
         } catch (IOException ex) {
             Logger.getLogger(registerForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_register_buttonActionPerformed
+        product_txtfield.setText("");
+        cantidad_txtfield.setText("");
+    }//GEN-LAST:event_nuevo_buttonActionPerformed
 
     private void cantidad_txtfieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cantidad_txtfieldKeyTyped
         // TODO add your handling code here:
@@ -223,6 +213,5 @@ public class registerForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton nuevo_button;
     private javax.swing.JTextField product_txtfield;
-    private javax.swing.JButton register_button;
     // End of variables declaration//GEN-END:variables
 }
